@@ -1,27 +1,32 @@
 package com.maker.shop.entity;
 
-import lombok.ToString;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Table(name= "product")
 @ToString
 public class Product extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long product_id;
+    private Long pno;
 
-    private String product_name;
+    private String name;
 
-    private Long product_price;
+    private Long price;
 
-    private String product_category;
+    private String category;
 
-    private String product_brand;
+    private String brand;
 
-    private Long product_sale;
+    private Long sale;
 
-    private String product_gender;
+    private String gender;
 
 }
