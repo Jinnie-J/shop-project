@@ -24,5 +24,6 @@ public class ReviewImage {
     private String path;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rno")
     private Review review;
 }

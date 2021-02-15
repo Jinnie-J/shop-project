@@ -17,9 +17,11 @@ public class Question extends BaseEntity{
     private Long qno;
 
     @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "pno")
     private Product product;
 
     @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "memNo")
     private Member member;
 
     @Column(length =100, nullable = false)

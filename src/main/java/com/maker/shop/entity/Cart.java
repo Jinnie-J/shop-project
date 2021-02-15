@@ -9,17 +9,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude={"product","productSize"})
+@ToString(exclude={"product","productSize","member"})
 public class Cart extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cno;
 
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="memNo")
+    private Member member;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pno")
     private Product product;
 
     @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "sizeNo")
     private ProductSize productSize;
 
     private String status;

@@ -18,9 +18,11 @@ public class Review extends Serializers.Base {
     private Long rno;
 
     @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "pno")
     private Product product;
 
     @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "memNo")
     private Member member;
 
     @Column(length =100, nullable = false)

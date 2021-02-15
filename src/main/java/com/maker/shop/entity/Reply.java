@@ -21,6 +21,7 @@ public class Reply extends BaseEntity{
     private String replyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qno")
     private Question question;
 
 }
