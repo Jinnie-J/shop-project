@@ -15,7 +15,7 @@ public class Product extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pno;
+    private String pno;
 
     private String name;
 

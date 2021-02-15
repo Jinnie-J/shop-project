@@ -37,6 +37,9 @@ dependencies {
     compile group: 'net.coobird', name:'thumbnailator', version:'0.4.12'
 
     implementation 'com.querydsl:querydsl-jpa'
+
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.13.0'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 }
 
 test {
