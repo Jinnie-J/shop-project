@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
+
+<table>
+    <thead>
+    <tr>
+        <th><h1><a href="/mainPr">메인으로</a></h1></th>
+        <th><h1><a th:href="@{/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1106 : 1113}) )}">운동화</a></h1></th>
+        <th><h1><a th:href="@{/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1105 : 1112}) )}">샌들</a></h1></th>
+        <th><h1><a th:href="@{/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1104 : 1111}) )}">부츠</a></h1></th>
+        <th><h1><a th:href="@{/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1102 : 1109}) )}">구두</a></h1></th>
+    </tr>
+    </thead>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>모델명</th>
+        <th>상품명</th>
+        <th>이미지</th>
+        <th>가격</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dto : ${result.dtoList}">
+        <th>[[${dto.pno}]]</th>
+        <th>[[${dto.name}]]</th>
+        <th><img width="200px" height="200px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|"></th>
+        <th>[[${dto.price}]] 원</th>
+    </tr>
+    </tbody>
+</table>
+
+<!--[[${result.dtoList}]]-->
+</html>
