@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class Product extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String pno;
 
     private String name;

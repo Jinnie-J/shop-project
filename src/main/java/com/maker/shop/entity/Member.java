@@ -15,12 +15,11 @@ import java.util.Set;
 public class Member extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memNo;
-
     private String email;
 
     private String password;
+
+    private String name;
 
     private String birth;
 

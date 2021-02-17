@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude={"product","member"})
+@ToString(exclude={"product","user"})
 public class Review extends Serializers.Base {
 
     @Id
@@ -22,8 +22,8 @@ public class Review extends Serializers.Base {
     private Product product;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "memNo")
-    private Member member;
+    @JoinColumn(name = "email")
+    private Member user;
 
     @Column(length =100, nullable = false)
     private String title;

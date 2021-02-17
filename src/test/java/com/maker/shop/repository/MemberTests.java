@@ -28,6 +28,7 @@ public class MemberTests {
         IntStream.rangeClosed(1,10).forEach(i-> {
             Member member= Member.builder()
                     .email("user"+i+"@maker.com")
+                    .name("사용자"+i)
                     .point(1000L)
                     .phone("010-1234-5678")
                     .status("일반")
