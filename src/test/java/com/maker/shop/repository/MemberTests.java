@@ -32,16 +32,11 @@ public class MemberTests {
                     .point(1000L)
                     .phone("010-1234-5678")
                     .status("일반")
-                    .grade("등급")
                     .fromSocial(false)
                     .birth("2021/02/16")
                     .password(passwordEncoder.encode("1111"))
                     .build();
 
-            member.addMemberRole(MemberRole.USER);
-            if(i>80){
-                member.addMemberRole(MemberRole.ADMIN);
-            }
             repository.save(member);
         });
     }
@@ -49,7 +44,7 @@ public class MemberTests {
     @Test
     public void testRead(){
 
-        Optional<Member> result = repository.findByEmail("user1@maker.com",false);
+        Optional<Member> result = repository.findByEmail("user1@maker.com");
         Member member=result.get();
         System.out.println(member);
     }

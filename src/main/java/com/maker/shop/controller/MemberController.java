@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @Log4j2
-@RequestMapping("/sample/")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -28,6 +27,7 @@ public class MemberController {
     public void exAll(){
         log.info("exAll............");
     }
+
     @GetMapping("/member")
     public void exMember(@AuthenticationPrincipal AuthMemberDTO authMember){
         log.info("exMember..........");
@@ -38,10 +38,25 @@ public class MemberController {
     public void exAdmin(){
         log.info("exAdmin...........");
     }
+
+
     @PostMapping("/member")
     public String signup(AuthMemberDTO authMemberDTO){
         userService.save(authMemberDTO);
         return "redirect:/login";
+    }
+
+    @GetMapping("/main")
+    public void main(){
+        log.info("main..........");
+    }
+
+    @GetMapping("/login")
+    public void login(){log.info("login............");
+    }
+
+    @GetMapping("/signup")
+    public void signup(){log.info("signup............");
     }
 
     @GetMapping(value="/logout")
