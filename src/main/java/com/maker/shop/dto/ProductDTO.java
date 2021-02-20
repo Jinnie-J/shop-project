@@ -18,7 +18,8 @@ public class ProductDTO {
 
     private String name;
 
-    //private List<ProductImageDTO> imageDTOList = new ArrayList<>();
+    @Builder.Default
+    private List<ProductImageDTO> imageDTOList = new ArrayList<>();
 
     private Long price;
 
@@ -29,5 +30,8 @@ public class ProductDTO {
     private Long sale;
 
     private String gender;
+
+    @Builder.Default
+    private List<ProductSizeDTO> productSizeDTOList = new ArrayList<>();
 
 }

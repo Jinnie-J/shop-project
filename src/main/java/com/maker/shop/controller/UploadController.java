@@ -108,8 +108,41 @@ public class UploadController {
             String srcFileName = URLDecoder.decode(fileName,"UTF-8");
 
             log.info("fileName: " + srcFileName);
+            log.info("============");
+            log.info(uploadPath + File.separator + srcFileName);
 
-            File file = new File(uploadPath + File.separator + srcFileName);
+            File file = new File(uploadPath + File.separator + srcFileName + ".jpg");
+
+            log.info("file: " + file);
+
+            HttpHeaders header = new HttpHeaders();
+
+            //MIME
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+
+            //파일 데이터 처리
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+        }catch (Exception e){
+            log.error(e.getMessage());
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return result;
+    }
+
+    @GetMapping("/productImg")
+    public ResponseEntity<byte[]> getProductImg(String fileName){
+
+        ResponseEntity<byte[]> result = null;
+
+        try{
+
+            String srcFileName = URLDecoder.decode(fileName,"UTF-8");
+
+            log.info("fileName: " + srcFileName);
+
+            File file = new File(uploadPath + File.separator + "0" + File.separator + srcFileName);
 
             log.info("file: " + file);
 

@@ -25,7 +25,7 @@ public class UploadResultDTO {
 
     public String getThumbnailURL(){
         try {
-            return URLEncoder.encode(folderPath+ "/s_" + uuid + "_" + fileName , "UTF-8");
+            return URLEncoder.encode(folderPath+ "/_" + uuid +"_" + 0 + "_" + fileName , "UTF-8");
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }
