@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>찜한 상품</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+<h>찜한 상품</h>
+<table>
+    <thead>
+    <tr>
+        <th>상품번호</th>
+        <th>상품명</th>
+        <th>이미지</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dto : ${result.dtoList}">
+        <th>[[${dto.pno}]]</th>
+        <th>[[${dto.productName}]]</th>
+        <th><img width="200px" height="200px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|"></th>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>
