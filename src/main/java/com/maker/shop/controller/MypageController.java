@@ -51,4 +51,18 @@ public class MypageController {
         return "redirect:/mypage/cart";
     }
 
+    @GetMapping("/buyList")
+    public void getBuyList(PageRequestDTO pageRequestDTO, Model model, Principal principal){
+        String email=principal.getName();
+        model.addAttribute(mypageService.getBuyList(pageRequestDTO,email));
+        model.addAttribute("result",mypageService.getBuyList(pageRequestDTO, email));
+    }
+
+    @GetMapping("/removeBL")
+    public String removeBL(long Bno, RedirectAttributes redirectAttributes){
+        mypageService.removeBL(Bno);
+        redirectAttributes.addFlashAttribute("msg",Bno);
+        return "redirect:/mypage/buyList";
+    }
+
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>장바구니</title>
+    <title>주문내역</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<h>장바구니</h>
+<h>주문내역</h>
 <table>
     <thead>
     <tr>
@@ -21,17 +21,19 @@
         <th>사이즈</th>
         <th>가격</th>
         <th>수량</th>
+        <th>주문날짜</th>
         <th>이미지</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="dto : ${result.dtoList}">
         <th>[[${dto.pno}]]
-            <a th:href="@{/mypage/removeCart(cno=${dto.cno})}">삭제</a></th>
+            <a th:href="@{/mypage/removeBL(Bno=${dto.Bno})}">삭제</a></th>
         <th>[[${dto.productName}]]</th>
         <th>[[${dto.size}]]</th>
         <th>[[${dto.price}]]</th>
         <th>[[${dto.amount}]]</th>
+        <th>[[${dto.regDate}]]</th>
         <th><img width="200px" height="200px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|"></th>
     </tr>
     </tbody>

@@ -2,6 +2,7 @@ package com.maker.shop.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDTO {
+public class BuyListDTO {
 
-    private Long cno;
+    private Long Bno;
     private Long amount;
-    private String status;
+    private String status; //배송상태
+    private LocalDateTime regDate;
 
     //member
     private String userEmail;
@@ -30,5 +32,4 @@ public class CartDTO {
     //product image
     @Builder.Default
     private List<ProductImageDTO> imageDTOList = new ArrayList<>();
-
 }

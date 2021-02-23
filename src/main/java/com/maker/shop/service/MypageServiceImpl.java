@@ -1,10 +1,8 @@
 package com.maker.shop.service;
 
-import com.maker.shop.dto.CartDTO;
-import com.maker.shop.dto.PageRequestDTO;
-import com.maker.shop.dto.PageResultDTO;
-import com.maker.shop.dto.PickListDTO;
+import com.maker.shop.dto.*;
 import com.maker.shop.entity.*;
+import com.maker.shop.repository.BuyListRepository;
 import com.maker.shop.repository.CartRepository;
 import com.maker.shop.repository.PickListRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class MypageServiceImpl implements  MypageService{
 
     private final PickListRepository pickListRepository; //찜한상품
     private final CartRepository cartRepository; //장바구니
+    private final BuyListRepository buyListRepository; //구매목록
 
     //찜한상품 part
     @Override
@@ -101,6 +100,40 @@ public class MypageServiceImpl implements  MypageService{
     @Override
     public void removeCart(Long cno) {
         cartRepository.deleteById(cno);
+
+    }
+
+    //구매목록 part
+    @Override
+    public Long registerBL(BuyListDTO buyListDTO) {
+        BuyList buyList=dtoToEntity(buyListDTO);
+        buyListRepository.save(buyList);
+        return buyListDTO.getBno();
+    }
+
+    @Override
+    public PageResultDTO<BuyListDTO, Object[]> getBuyList(PageRequestDTO pageRequestDTO, String email) {
+
+        Pageable pageable= pageRequestDTO.getPageable(Sort.by("Bno").descending());
+        Page<Object[]> result = buyListRepository.getBuyListPage(pageable,email);
+        Function<Object[], BuyListDTO> fn = (arr -> entitiesToDTO(
+                (BuyList)arr[0],
+                (Member)arr[1],
+                (Product)arr[2],
+                (ProductSize)arr[3],
+                (List<ProductImage>)(Arrays.asList((ProductImage)arr[4]))
+        ));
+        return new PageResultDTO<>(result,fn);
+    }
+
+    @Override
+    public BuyListDTO getBL(Long Bno) {
+        return null;
+    }
+
+    @Override
+    public void removeBL(Long Bno) {
+        buyListRepository.deleteById(Bno);
 
     }
 

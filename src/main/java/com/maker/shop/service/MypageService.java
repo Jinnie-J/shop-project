@@ -86,6 +86,7 @@ public interface MypageService {
                 .userEmail(member.getEmail())
                 .pno(product.getPno())
                 .productName(product.getName())
+                .price(product.getPrice())
                 .size(productSize.getSize())
                 .amount(cart.getAmount())
                 .status(cart.getStatus())
@@ -104,5 +105,56 @@ public interface MypageService {
         return cartDTO;
     }
 
+    //구매목록페이지에 추가
+    Long registerBL(BuyListDTO buyListDTO);
+    //구매목록 목록처리
+    PageResultDTO<BuyListDTO, Object[]> getBuyList(PageRequestDTO pageRequestDTO,String email);
+    //조회
+    BuyListDTO getBL(Long Bno);
+    //삭제
+    void removeBL(Long Bno);
 
+    default BuyList dtoToEntity(BuyListDTO buyListDTO){
+        Member member=Member.builder().email(buyListDTO.getUserEmail()).build();
+        Product product=Product.builder().name(buyListDTO.getProductName()).build();
+        ProductSize productSize=ProductSize.builder().size(buyListDTO.getSize()).build();
+
+        BuyList buyList=BuyList.builder()
+                .Bno(buyListDTO.getBno())
+                .user(member)
+                .product(product)
+                .productSize(productSize)
+                .amount(buyListDTO.getAmount())
+                .status(buyListDTO.getStatus())
+                .build();
+
+        return buyList;
+    }
+
+    default BuyListDTO entitiesToDTO(BuyList buyList,Member member, Product product,
+                                      ProductSize productSize, List<ProductImage> productImages) {
+        BuyListDTO buyListDTO = BuyListDTO.builder()
+                .Bno(buyList.getBno())
+                .userEmail(member.getEmail())
+                .pno(product.getPno())
+                .productName(product.getName())
+                .price(product.getPrice())
+                .size(productSize.getSize())
+                .amount(buyList.getAmount())
+                .status(buyList.getStatus())
+                .regDate(buyList.getRegDate())
+                .build();
+
+        List<ProductImageDTO> productImageDTOList = productImages.stream().
+                map(productImage -> {
+
+                    return ProductImageDTO.builder().imgName(productImage.getImgName())
+                            .path(productImage.getPath())
+                            .uuid(productImage.getUuid())
+                            .build();
+                }).collect(Collectors.toList());
+
+        buyListDTO.setImageDTOList(productImageDTOList);
+        return buyListDTO;
+    }
 }
