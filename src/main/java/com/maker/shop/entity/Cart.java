@@ -28,5 +28,6 @@ public class Cart extends BaseEntity {
     @JoinColumn(name = "sizeNo")
     private ProductSize productSize;
 
+    private Long amount;
     private String status;
 }

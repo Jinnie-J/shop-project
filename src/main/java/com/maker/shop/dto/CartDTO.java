@@ -2,7 +2,6 @@ package com.maker.shop.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,20 +10,24 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PickListDTO {
+public class CartDTO {
 
-    private Long pickNo;
+    private Long cno;
+    private Long amount;
+    private String status;
 
     //member
     private String userEmail;
-    private String userName;
-    private LocalDateTime regDate;
 
     //product
     private String pno;
     private String productName;
 
+    //productsize
+    private Long size;
+
     //product image
     @Builder.Default
     private List<ProductImageDTO> imageDTOList = new ArrayList<>();
+
 }
