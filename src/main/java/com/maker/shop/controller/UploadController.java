@@ -142,7 +142,7 @@ public class UploadController {
 
             log.info("fileName: " + srcFileName);
 
-            File file = new File(uploadPath + File.separator + "0" + File.separator + srcFileName);
+            File file = new File(uploadPath + File.separator + srcFileName + ".jpg");
 
             log.info("file: " + file);
 
