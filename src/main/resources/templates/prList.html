@@ -29,13 +29,29 @@
     </thead>
     <tbody>
     <tr th:each="dto : ${result.dtoList}">
+
         <th>[[${dto.pno}]]</th>
-        <th>[[${dto.name}]]</th>
+        <th> <a th:href="@{/prDetail(pno=${dto.pno})}">[[${dto.name}]]</a></th>
         <th><img width="200px" height="200px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|"></th>
         <th>[[${dto.price}]] 원</th>
+
     </tr>
     </tbody>
 </table>
 
+<!--pagination-->
+<ul>
+   <li th:if="${result.prev}">
+       <a th:href="@{/prList(gender= ${gender}, page= ${result.start-1}, category= ${category})}" tabindex="-1"> << </a>
+   </li>
+
+    <li th:each="page: ${result.pageList}">
+        <a th:href="@{/prList(gender= ${gender}, page= ${page}, category= ${category})}"> [[${page}]] </a>
+    </li>
+
+    <li th:if="${result.next}">
+        <a th:href="@{/prList(gender= ${gender}, page= ${result.end + 1}, category= ${category})}"> >> </a>
+    </li>
+</ul>
 <!--[[${result.dtoList}]]-->
 </html>

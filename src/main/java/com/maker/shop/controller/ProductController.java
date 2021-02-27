@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,18 +17,35 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/prList")
-    public void getProductList(PageRequestDTO pageRequestDTO, Model model,String gender,String category) {
+    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category) {
 
         //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
+        log.info("category : " + category);
+
+        model.addAttribute("category", category);
         model.addAttribute("gender", gender);
-        model.addAttribute("result", productService.getProductList(pageRequestDTO,gender,category));
+        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category));
 
     }
 
     @GetMapping("/mainPr")
-    public void mainPr(){
+    public void mainPr(PageRequestDTO pageRequestDTO,Model model) {
 
+        model.addAttribute("newProduct", productService.getNewProduct(pageRequestDTO));
+        model.addAttribute("saleProduct",productService.getSaleProduct(pageRequestDTO));
+
+//        log.info("메인페이지 상품목록 : " + productService.getNewProduct(pageRequestDTO));
+            log.info("할인품목 "+ productService.getSaleProduct(pageRequestDTO));
+    }
+
+    @GetMapping("/prDetail")
+    public void getProductDetail(String pno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model){
+
+        log.info("pno: " + pno);
+
+        model.addAttribute("sizeDTO", productService.getProductSizeList(pno));
+        model.addAttribute("productDTO", productService.getProduct(pno));
     }
 
 }

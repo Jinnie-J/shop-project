@@ -39,4 +39,13 @@ public class ProductImageDTO {
         }
         return  "";
     }
+
+    public String getProductImgURL(int count){
+        try{
+            return URLEncoder.encode(path+"/"+uuid+"_"+count+"_"+imgName, "UTF-8");
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        return  "";
+    }
 }
