@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude={"product","productSize","member"})
+@ToString(exclude={"product","user"})
 public class PickList extends BaseEntity {
 
     @Id
@@ -17,14 +17,11 @@ public class PickList extends BaseEntity {
     private Long pickNo;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="memNo")
-    private Member member;
+    @JoinColumn(name="email")
+    private Member user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")
     private Product product;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "sizeNo")
-    private ProductSize productSize;
 }

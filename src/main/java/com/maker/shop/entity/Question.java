@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude={"product","member"})
+@ToString(exclude={"product","user"})
 public class Question extends BaseEntity{
 
     @Id
@@ -21,8 +21,8 @@ public class Question extends BaseEntity{
     private Product product;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "memNo")
-    private Member member;
+    @JoinColumn(name = "email")
+    private Member user;
 
     @Column(length =100, nullable = false)
     private String title;

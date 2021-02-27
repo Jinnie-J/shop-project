@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude={"product","productSize","member"})
+@ToString(exclude={"product","productSize","user"})
 public class Cart extends BaseEntity {
 
     @Id
@@ -17,8 +17,8 @@ public class Cart extends BaseEntity {
     private Long cno;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="memNo")
-    private Member member;
+    @JoinColumn(name="email")
+    private Member user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")

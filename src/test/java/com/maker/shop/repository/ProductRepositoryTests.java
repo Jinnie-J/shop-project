@@ -30,6 +30,7 @@ public class ProductRepositoryTests {
     public void insertProducts(){
 
         Product product = Product.builder()
+                .pno("test2")
                 .name("나이키 에어맥스")
                 .price(20000L)
                 .category("운동화")
@@ -43,7 +44,7 @@ public class ProductRepositoryTests {
        ProductImage productImage = ProductImage.builder()
                 .uuid(UUID.randomUUID().toString())
                 .product(product)
-                .imgName("test1.jpg").build();
+                .imgName("test2.jpg").build();
 
         productImageRepository.save(productImage);
 
