@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class AuthMemberDTO{
 
     private String email;
@@ -19,5 +20,7 @@ public class AuthMemberDTO{
     private String birth;
     private String phone;
     private String auth;
+    private Long point;
+    private String status;
     private boolean fromSocial;
 }

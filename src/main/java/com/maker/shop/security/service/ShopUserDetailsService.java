@@ -28,7 +28,7 @@ public class ShopUserDetailsService implements UserDetailsService {
     public Member save(AuthMemberDTO authMemberDTO){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         authMemberDTO.setPassword(encoder.encode(authMemberDTO.getPassword()));
-
+        log.info("-----------service:"+authMemberDTO);
         return memberRepository.save(Member.builder()
             .email(authMemberDTO.getEmail())
                 .name(authMemberDTO.getName())
@@ -37,6 +37,8 @@ public class ShopUserDetailsService implements UserDetailsService {
                 .birth(authMemberDTO.getBirth())
                 .auth(authMemberDTO.getAuth())
                 .password(authMemberDTO.getPassword())
+                .status("일반")
+                .point(0L)
                 .build());
     }
 }

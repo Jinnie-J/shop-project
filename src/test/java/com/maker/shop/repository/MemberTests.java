@@ -1,8 +1,6 @@
 package com.maker.shop.repository;
 
 import com.maker.shop.entity.Member;
-import com.maker.shop.entity.MemberRole;
-import com.maker.shop.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +23,9 @@ public class MemberTests {
         //1-80까지는 USER만 지정
         //81-90까지는 USER,ADMIN
 
-        IntStream.rangeClosed(1,10).forEach(i-> {
+        IntStream.rangeClosed(1,1).forEach(i-> {
             Member member= Member.builder()
-                    .email("user"+i+"@maker.com")
+                    .email("usertest"+i+"@maker.com")
                     .name("사용자"+i)
                     .point(1000L)
                     .phone("010-1234-5678")
