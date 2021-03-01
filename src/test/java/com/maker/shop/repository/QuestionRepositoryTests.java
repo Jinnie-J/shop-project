@@ -1,5 +1,6 @@
 package com.maker.shop.repository;
 
+import com.maker.shop.dto.QuestionDTO;
 import com.maker.shop.entity.Member;
 import com.maker.shop.entity.Product;
 import com.maker.shop.entity.Question;
@@ -83,4 +84,5 @@ public class QuestionRepositoryTests {
         Object[] arr= (Object[])result;
         System.out.println(Arrays.toString(arr));
     }
+
 }

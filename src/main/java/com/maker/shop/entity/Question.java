@@ -29,4 +29,11 @@ public class Question extends BaseEntity{
 
     @Column(length=1500, nullable = false)
     private String content;
+
+    public void changeTitle(String title){
+        this.title=title;
+    }
+    public void changeContent(String content){
+        this.content=content;
+    }
 }
