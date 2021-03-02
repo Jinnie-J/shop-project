@@ -23,6 +23,7 @@ public interface ProductService {
                 .price(product.getPrice())
                 .category(product.getCategory())
                 .gender(product.getGender())
+                .sale(product.getSale())
                 .build();
 
         List<ProductImageDTO> productImageDTOList = productImages.stream().

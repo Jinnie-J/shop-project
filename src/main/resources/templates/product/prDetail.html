@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .detail-box {
+            flex:1;
+            }
+        .thumContainer img{
+            flex:1;
+            }
+            @keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+
+<div id="content" style="width:70%; margin-left:auto; margin-right:auto; display:flex;">
+
+    <div id="pd-img-gallery" class="detail-box">
+
+
+        <!-- 상품 이미지 출력 -->
+        <th:block th:each="imgList : ${productDTO.imageDTOList}" th:if="${imgListStat.count} <= 1" style="display=flex;">
+                <div class="zoomContainer">
+                    <img class="zoomImg" width="100%" style="object-fit:cover;" th:src="|/productImg?fileName=${imgList.getProductImgURL(imgListStat.index)}|">
+                </div>
+        </th:block>
+
+        <div class="thumContainer" style="display:flex; width:100%;">
+            <th:block th:each="imgList : ${productDTO.imageDTOList}" th:if="${imgListStat.count} <= 5">
+            <img class="thumImg" width="20%;" style="object-fit:cover;" th:src="|/productImg?fileName=${imgList.getProductImgURL(imgListStat.index)}|">
+            </th:block>
+        </div>
+
+
+
+    </div>
+<!-- End gallery  -->
+
+    <div class="detail-box">
+        <h1>[[${productDTO.name}]]</h1>
+        상품코드 <span th:text="${productDTO.pno}"></span><br>
+<!--        <span th:text="${productDTO.brand}" ></span><br>-->
+
+        <table width="100%">
+            <tr>
+                <td>가격</td>
+                <td th:text="${#numbers.formatInteger(productDTO.price, 3, 'COMMA')}+ 원" ></td>
+            </tr>
+            <tr>
+                <td width="30%">배송방법</td>
+                <td width="70%">
+                    <b>일반배송</b><span>(무료배송)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>사이즈</td>
+                <td>
+                    <select>
+                        <div th:each="sizeList : ${sizeDTO}">
+                            <!--    [[${sizeList.size}]] | 재고(수량) <span th:text="${sizeList.amount} > 0 ? 구매가능 : 구매불가"></span>-->
+                            <th:block th:if="${sizeList.amount} > 0">
+                                <option>[[${sizeList.size}]]</option>
+                            </th:block>
+                        </div>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <div id="SelectProductList">
+
+        </div>
+
+        <a href="/mainPr">메인으로</a>
+        <a href="">구매하기</a>
+        <a href="">장바구니</a>
+        <a href="">찜하기</a><br>
+
+    </div>
+
+</div>
+<!-- End content -->
+</body>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(".thumImg").on("click",function(e){
+
+    //$(".zoomImg").attr("style","");
+    //$(".zoomImg").attr("style","animation: fadein 2s; transition: 0.2s all;");
+    //$(".zoomImg").remove();
+    //$(".zoomContainer").append("<img class='zoomImg' style='animation: fadein 2s;' width='100%' style='object-fit:cover;' src=" + this.getAttribute("src") + ">");
+    //$(".zoomImg").fadeIn();
+
+    $(".zoomImg").attr("src",this.getAttribute("src"));
+
+    });
+</script>
+</html>

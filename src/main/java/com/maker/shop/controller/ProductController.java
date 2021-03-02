@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
 @Log4j2
+@RequestMapping("/product/")
 public class ProductController {
 
     private final ProductService productService;
@@ -27,16 +29,6 @@ public class ProductController {
         model.addAttribute("gender", gender);
         model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category));
 
-    }
-
-    @GetMapping("/mainPr")
-    public void mainPr(PageRequestDTO pageRequestDTO,Model model) {
-
-        model.addAttribute("newProduct", productService.getNewProduct(pageRequestDTO));
-        model.addAttribute("saleProduct",productService.getSaleProduct(pageRequestDTO));
-
-//        log.info("메인페이지 상품목록 : " + productService.getNewProduct(pageRequestDTO));
-            log.info("할인품목 "+ productService.getSaleProduct(pageRequestDTO));
     }
 
     @GetMapping("/prDetail")

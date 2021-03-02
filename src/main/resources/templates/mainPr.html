@@ -101,10 +101,11 @@
 .content{position:relative; width:1500px; margin:50px auto 0; padding:50px 0;}
 
 .content:before{content:""; position:absolute; top:0; left:50%; margin-left: -960px; width:1115px; height:460px;
-background:red; z-index:-1;}
-.content h3{font-size:35px; color:#fff; line-height:1;}
+background:#ffdb4d; z-index:-1;}
+.content h3{font-size:35px; color:red; line-height:1;}
+.content a{font-size:20px; font-weight:bold; color:red; text-decoration:none;}
 .content p{font-size:18px;
-color:#fff; margin-top:20px; }
+color:red; margin-top:20px; }
 #rolling{position:absolute; top:60px; left:50%; margin-left: -30%; width:90%;
 height:432px;}
 
@@ -124,14 +125,22 @@ position:relative;
 <div class="navbar">
 
     <div class="dropdown">
+        <a href="">BRAND</a>
+    </div>
+
+    <div class="dropdown">
+        <a href="">SALE</a>
+    </div>
+
+    <div class="dropdown">
         <button class="dropbtn">MEN
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            <a href="/prList?gender=MEN&category=1106">운동화</a>
-            <a href="/prList?gender=MEN&category=1105">샌들</a>
-            <a href="/prList?gender=MEN&category=1104">부츠</a>
-            <a href="/prList?gender=MEN&category=1102">구두</a>
+            <a href="/product/prList?gender=MEN&category=1106">운동화</a>
+            <a href="/product/prList?gender=MEN&category=1105">샌들</a>
+            <a href="/product/prList?gender=MEN&category=1104">부츠</a>
+            <a href="/product/prList?gender=MEN&category=1102">구두</a>
         </div>
     </div>
 
@@ -140,10 +149,10 @@ position:relative;
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            <a href="/prList?gender=WOMEN&category=1113">운동화</a>
-            <a href="/prList?gender=WOMEN&category=1112">샌들</a>
-            <a href="/prList?gender=WOMEN&category=1111">부츠</a>
-            <a href="/prList?gender=WOMEN&category=1109">구두</a>
+            <a href="/product/prList?gender=WOMEN&category=1113">운동화</a>
+            <a href="/product/prList?gender=WOMEN&category=1112">샌들</a>
+            <a href="/product/prList?gender=WOMEN&category=1111">부츠</a>
+            <a href="/product/prList?gender=WOMEN&category=1109">구두</a>
         </div>
     </div>
 </div>
@@ -152,19 +161,26 @@ position:relative;
 <div class="content">
     <h3>HOT DEAL</h3>
     <p>오늘만 이 가격!<br>지금 특별한 가격을 만나보세요!</p>
+    <br><br>
+
+    <a href="" style="color:red;">MORE ></a>
     <div id="rolling">
         <div class="responsive">
-            <div style="background-color:white; padding:20px; border: 1px solid black;" th:each="dto : ${saleProduct.dtoList}" th:onclick="'window.location.href = \'' + @{/prDetail(pno=${dto.pno})} + '\''">
-                <div>
+            <div style="background-color:white; border: 1px solid black;" th:each="dto : ${saleProduct.dtoList}" th:onclick="'window.location.href = \'' + @{/product/prDetail(pno=${dto.pno})} + '\''">
 
+                <div>
+                    <div style="position:absolute; background-color:red; width:70px; height:70px; text-align:center; line-height: 70px; font-weight:700    ;">
+                        <span style="color:white; font-size:28px;">[[${dto.sale}]]</span>
+                        <span style="color:white; font-size:20px">%</span>
+                    </div>
                     <img width="100%" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
 
                 </div>
-                <div style="border-top: 1px solid gray;">
-                    <b>[[${dto.brand}]]</b> <br>
-                    [[${dto.name}]] <br> <br>
-                    [[${dto.sale}]]
-                    <b style="text-decoration:line-through;" th:text="${#numbers.formatInteger(dto.price, 3, 'COMMA')}+ 원"></b> <h3 style="color:red;"></h3><br>
+                <div style="border-top: 1px solid gray; padding:20px;">
+                    <h2>[[${dto.brand}]]</h2>
+                    [[${dto.name}]]
+<!--                    [[${dto.sale}]]-->
+                    <p style="color:red;"><span style="color:black; text-decoration:line-through;" th:text="${#numbers.formatInteger(dto.price, 3, 'COMMA')}+ 원"> </span> <b style="color:red; font-size:24px;" th:text="${#numbers.formatInteger(dto.price * (1 - dto.sale / 100.0), 3, 'COMMA')}"></b>원[<span th:text="${dto.sale}"></span>%]</p><br>
                 </div>
 
             </div>
@@ -176,7 +192,7 @@ position:relative;
 <h1 style="text-align:center">NEW ARRIVALS</h1>
 <div class="multiple-items" style="width:70%; margin-left:auto; margin-right:auto; padding:auto;">
 
-    <div th:each="dto : ${newProduct.dtoList}" th:onclick="'window.location.href = \'' + @{/prDetail(pno=${dto.pno})} + '\''">
+    <div th:each="dto : ${newProduct.dtoList}" th:onclick="'window.location.href = \'' + @{/product/prDetail(pno=${dto.pno})} + '\''">
         <div>
 
             <img width="225px" height="225px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
@@ -214,7 +230,7 @@ position:relative;
     $('.responsive').slick({
         dots: false,
         infinite: true,
-        autoplay: false,			// 자동 스크롤 사용 여부
+        autoplay: true,			// 자동 스크롤 사용 여부
         autoplaySpeed: 3000,
         slidesToShow: 3,
         slidesToScroll: 1,
