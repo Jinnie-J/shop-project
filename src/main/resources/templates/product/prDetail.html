@@ -49,10 +49,11 @@
         <h1>[[${productDTO.name}]]</h1>
         상품코드 <span th:text="${productDTO.pno}"></span><br>
 <!--        <span th:text="${productDTO.brand}" ></span><br>-->
-
+<hr>
         <table width="100%">
             <tr>
                 <td>가격</td>
+                <input type="hidden" id="pd-price" th:value="${productDTO.price}">
                 <td th:text="${#numbers.formatInteger(productDTO.price, 3, 'COMMA')}+ 원" ></td>
             </tr>
             <tr>
@@ -64,11 +65,11 @@
             <tr>
                 <td>사이즈</td>
                 <td>
-                    <select>
+                    <select id="size">
                         <div th:each="sizeList : ${sizeDTO}">
                             <!--    [[${sizeList.size}]] | 재고(수량) <span th:text="${sizeList.amount} > 0 ? 구매가능 : 구매불가"></span>-->
                             <th:block th:if="${sizeList.amount} > 0">
-                                <option>[[${sizeList.size}]]</option>
+                                <option th:data-amount="${sizeList.amount}" th:value="${sizeList.size}">[[${sizeList.size}]]</option>
                             </th:block>
                         </div>
                     </select>
@@ -79,11 +80,20 @@
         <div id="SelectProductList">
 
         </div>
+        <hr>
 
-        <a href="/mainPr">메인으로</a>
-        <a href="">구매하기</a>
-        <a href="">장바구니</a>
-        <a href="">찜하기</a><br>
+        <div id="total" style="display:flex; justify-content: space-between; width:100%; height:60px; line-height:60px;">
+            <div>총 결제금액</div>
+            <div><span id="totalValue" style="color:red; font-weight:bold; font-size:35px">0</span>  원</div>
+        </div>
+
+        <div style="width:100%; display:flex; text-align:center; justify-content: space-around; height:60px; line-height: 60px;">
+            <div style="width:48%; background:gray; color:white;"><b>장바구니</b></div>
+            <div style="width:48%; background:black; color:white;"><b>구매</b></div>
+        </div>
+
+       <!-- <a href="/mainPr">메인으로</a>
+        <a href="">찜하기</a><br>-->
 
     </div>
 
@@ -92,6 +102,48 @@
 </body>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+
+     $(document).ready(function () {
+
+        let pdCount = 0;
+        let pdPrice = $("#pd-price").val();
+
+    $("#size").on("change",function(){
+
+        let price = $("#pd-price").val().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        let amount = 0;
+
+        if(this.classList.contains('selected')){
+            return;
+        }
+
+        for(let i=0; i<this.children.length; i++){
+            if(this.children[i].value == this.value){
+                amount = this.children[i].dataset.amount;
+            }
+        }
+        this.className == 'selected';
+
+
+        pdCount += 1;
+
+        $("#SelectProductList").append(`<div style='display:flex; height:60px; justify-content: space-between; width:100%; background:#e6e6e6'>
+        <div style='width:50%; padding:17px' data-amount=${amount}>${this.value}</div>
+        <div style='display:flex; justify-content:space-between; width:50%; padding:17px'>
+            <div id='counter' style='border:1px solid #5e5e5e; background:white; height:25px; display:flex; text-align:center; width:80px;'>
+                <div style='width:25%; cursor:pointer;' class='counterMinus' onclick='minus(this);'>-</div>
+                <div style='width:50%;' class='counterValue'>1</div>
+                <div style='width:25%; cursor:pointer;' class='counterPlus' onclick='plus(this);'>+</div>
+            </div>
+            <div class='price'>${price}원</div>
+        </div>
+        </div>`);
+
+         totalValue();
+    });
+
+     });
+
     $(".thumImg").on("click",function(e){
 
     //$(".zoomImg").attr("style","");
@@ -103,5 +155,42 @@
     $(".zoomImg").attr("src",this.getAttribute("src"));
 
     });
+
+    function minus(e){
+        if(e.nextElementSibling.innerText <= 1){
+            return;
+        }
+        e.nextElementSibling.innerText = e.nextElementSibling.innerText *1 - 1
+
+        e.parentElement.nextElementSibling.innerText = ($("#pd-price").val()*1 *e.nextElementSibling.innerText).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
+
+        totalValue();
+    };
+
+    function plus(e){
+        if(e.previousElementSibling.innerText*1 >= e.parentElement.parentElement.previousElementSibling.dataset.amount){
+            alert("구매 가능한 최대 수량은" + e.parentElement.parentElement.previousElementSibling.dataset.amount + "개 입니다");
+            return;
+        }
+        e.previousElementSibling.innerText = e.previousElementSibling.innerText *1 + 1
+
+        e.parentElement.nextElementSibling.innerText = ($("#pd-price").val()*1 *e.previousElementSibling.innerText).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원";
+
+        totalValue();
+    };
+
+    function totalValue(){
+
+        let totalValue = document.getElementById("totalValue");
+
+        let counter = document.getElementsByClassName("counterValue");
+        let amount = 0;
+
+        for(let i=0; i<counter.length; i++){
+            amount += counter[i].innerText *1
+        }
+
+        totalValue.innerText = ($("#pd-price").val()*1 * amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 </script>
 </html>
