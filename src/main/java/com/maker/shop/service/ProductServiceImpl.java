@@ -38,6 +38,9 @@ public class ProductServiceImpl implements ProductService {
         if(category == ""){
             category = null;
         }
+
+        requestDTO.setSize(20);
+
         Pageable pageable = requestDTO.getPageable(Sort.by("pno").descending());
 
         Page<Object[]> result = productRepository.getProductListPage(pageable,gender, category);

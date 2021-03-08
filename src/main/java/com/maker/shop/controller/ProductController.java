@@ -24,7 +24,6 @@ public class ProductController {
         //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
         log.info("category : " + category);
-
         model.addAttribute("category", category);
         model.addAttribute("gender", gender);
         model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category));

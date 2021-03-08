@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <style>
-    table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
+    .pagination ul > li {
+        display:inline;
+    }
 </style>
+<div style="width:75%; margin-left:auto; margin-right:auto; display:flex;">
 
-<table>
-    <thead>
-    <tr>
-        <th><h1><a href="/mainPr">메인으로</a></h1></th>
-        <th><h1><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1106 : 1113}) )}">운동화</a></h1></th>
-        <th><h1><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1105 : 1112}) )}">샌들</a></h1></th>
-        <th><h1><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1104 : 1111}) )}">부츠</a></h1></th>
-        <th><h1><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1102 : 1109}) )}">구두</a></h1></th>
-    </tr>
-    </thead>
-</table>
-<table>
-    <thead>
-    <tr>
-        <th>모델명</th>
-        <th>상품명</th>
-        <th>이미지</th>
-        <th>가격</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="dto : ${result.dtoList}">
+    <div style="width:20%">
+        <ul>
+<li><a href="/mainPr">메인으로</a></li>
+<li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1106 : 1113}) )}">운동화</a></li>
+<li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1105 : 1112}) )}">샌들</a></li>
+<li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1104 : 1111}) )}">부츠</a></li>
+<li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1102 : 1109}) )}">구두</a></li>
+        </ul>
+    </div>
+<!--product list-->
+<div style="display:flex; flex-wrap:wrap; text-align:center; width:80%;">
+    <th:block th:each="dto : ${result.dtoList}">
+        <!--        [[${dto.pno}]]-->
 
-        <th>[[${dto.pno}]]</th>
-        <th> <a th:href="@{/product/prDetail(pno=${dto.pno})}">[[${dto.name}]]</a></th>
-        <th><img width="200px" height="200px" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|"></th>
-        <th>[[${dto.price}]] 원</th>
+        <div th:onclick="getProduct([[${dto.pno}]]);">
+            <div style="width:200px; height:200px;">
+                <img style="position:absolute; width:auto; height:30px;" th:src="@{/logo/{img}.png(img=${dto.brand})}" />
 
-    </tr>
-    </tbody>
-</table>
+                <img width="100%" height="100%" th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
+            </div>
+            <div>
+                [[${dto.name}]] <br>
+                [[${dto.price}]] 원
+            </div>
+        </div>
 
-<!--pagination-->
-<ul>
-   <li th:if="${result.prev}">
-       <a th:href="@{/product/prList(gender= ${gender}, page= ${result.start-1}, category= ${category})}" tabindex="-1"> << </a>
-   </li>
+    </th:block>
 
-    <li th:each="page: ${result.pageList}">
-        <a th:href="@{/product/prList(gender= ${gender}, page= ${page}, category= ${category})}"> [[${page}]] </a>
-    </li>
+</div>
+<!--End product-->
+</div>
 
-    <li th:if="${result.next}">
-        <a th:href="@{/product/prList(gender= ${gender}, page= ${result.end + 1}, category= ${category})}"> >> </a>
-    </li>
-</ul>
-<!--[[${result.dtoList}]]-->
+<div class="pagination" style="margin-left:25%; width:55%; margin-right:12.5%; text-align:center;">
+    <!--pagination-->
+    <ul>
+        <li th:if="${result.prev}">
+            <a th:href="@{/product/prList(gender= ${gender}, page= ${result.start-1}, category= ${category})}"
+               tabindex="-1">
+                << </a>
+        </li>
+
+        <li th:each="page: ${result.pageList}">
+            <a th:href="@{/product/prList(gender= ${gender}, page= ${page}, category= ${category})}"> [[${page}]] </a>
+        </li>
+
+        <li th:if="${result.next}">
+            <a th:href="@{/product/prList(gender= ${gender}, page= ${result.end + 1}, category= ${category})}"> >> </a>
+        </li>
+    </ul>
+</div>
+
+<script>
+
+    function getProduct(pno) {
+
+        location.href = "/product/prDetail?pno="+pno;
+
+    }
+</script>
+
 </html>

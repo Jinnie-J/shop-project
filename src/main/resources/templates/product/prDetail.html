@@ -19,8 +19,12 @@
     }
 }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
+ <a href="/mainPr">메인으로</a>
+ <a href="">찜하기</a><br>
 
 <div id="content" style="width:70%; margin-left:auto; margin-right:auto; display:flex;">
 
@@ -36,7 +40,7 @@
 
         <div class="thumContainer" style="display:flex; width:100%;">
             <th:block th:each="imgList : ${productDTO.imageDTOList}" th:if="${imgListStat.count} <= 5">
-            <img class="thumImg" width="20%;" style="object-fit:cover;" th:src="|/productImg?fileName=${imgList.getProductImgURL(imgListStat.index)}|">
+            <img class="thumImg" width="20%;" style="object-fit:cover; cursor:pointer;" th:src="|/productImg?fileName=${imgList.getProductImgURL(imgListStat.index)}|">
             </th:block>
         </div>
 
@@ -88,12 +92,9 @@
         </div>
 
         <div style="width:100%; display:flex; text-align:center; justify-content: space-around; height:60px; line-height: 60px;">
-            <div style="width:48%; background:gray; color:white;"><b>장바구니</b></div>
-            <div style="width:48%; background:black; color:white;"><b>구매</b></div>
+            <div style="width:48%; background:gray; color:white; cursor:pointer;"><b>장바구니</b></div>
+            <div style="width:48%; background:black; color:white; cursor:pointer;"><b>구매</b></div>
         </div>
-
-       <!-- <a href="/mainPr">메인으로</a>
-        <a href="">찜하기</a><br>-->
 
     </div>
 
@@ -136,6 +137,7 @@
                 <div style='width:25%; cursor:pointer;' class='counterPlus' onclick='plus(this);'>+</div>
             </div>
             <div class='price'>${price}원</div>
+            <div class='unSelected' style='cursor:pointer' onclick="unSelected(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
         </div>
         </div>`);
 
@@ -191,6 +193,13 @@
         }
 
         totalValue.innerText = ($("#pd-price").val()*1 * amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function unSelected(obj){
+
+        obj.parentElement.parentElement.remove();
+
+        totalValue();
     }
 </script>
 </html>
