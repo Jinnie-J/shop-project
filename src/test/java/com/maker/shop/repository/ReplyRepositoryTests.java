@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+
+import static com.maker.shop.entity.QReply.reply;
 
 @SpringBootTest
 public class ReplyRepositoryTests {
@@ -35,11 +38,17 @@ public class ReplyRepositoryTests {
     @Transactional
     @Test
     public void readReply1(){
-        Optional<Reply> result= replyRepository.findById(1L);
+        Optional<Reply> result= replyRepository.findById(4L);
         Reply reply =result.get();
 
         System.out.println(reply);
         System.out.println(reply.getQuestion());
+    }
+
+    @Test
+    public void testListByQuestion(){
+        List<Reply> replyList = replyRepository.getRepliesByQuestionOrderByReplyNo(Question.builder().qno(4L).build());
+        replyList.forEach(reply -> System.out.println(reply));
     }
 
 }

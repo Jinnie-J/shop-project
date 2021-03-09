@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
+    <th:block th:fragment="content">
+        <h1 class="mt-4">Question Read Page</h1>
+
+        <div class="form-group">
+            <label>Qno</label>
+            <input type="text" class="form-control" name="qno" th:value="${dto.qno}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Product</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.pno}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <input type="text" class="form-control" name="content" th:value="${dto.content}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Writer</label>
+            <input type="text" class="form-control" name="writerName" th:value="${dto.writerName}" readonly>
+        </div>
+        <div class="form-group">
+            <label>RegDate</label>
+            <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div class="form-group">
+            <label>ModDate</label>
+            <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+
+        <a th:href="@{/question/modify(qno=${dto.qno}, page=${requestDTO.page})}">
+            <button type="button" class="btn btn-primary">Modify</button></a>
+
+        <a th:href="@{/question/list(page=${requestDTO.page})}">
+            <button type="button" class="btn btn-info">List</button>
+        </a>
+
+        <div class="mt-4">
+            <h5><span class="badge badge-info addReply">Add Reply</span></h5>
+            <h5><span class="badge badge-secondary replyCount">Reply Count [[${dto.replyCount}]]</span></h5>
+        </div>
+        <div class="list-group replyList">
+        </div>
+
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="replyText" placeholder="Reply Text...">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="replyer" placeholder="replyer">
+                            <input type="hidden" name="replyNo">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger replyRemove">Remove</button>
+                        <button type="button" class="btn btn-warning replyModify">Modify</button>
+                        <button type="button" class="btn btn-primary replySave">Save</button>
+                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+                var qno = [[${dto.qno}]];
+                var listGroup = $(".replyList");
+
+                function formatTime(str) {
+                    var date = new Date(str);
+
+                    return date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+                }
+
+                //특정한 게시물의 댓글을 처리
+                function loadJSONData() {
+                    $.getJSON('/replies/question/' + qno, function (arr) {
+                        console.log(arr);
+                        var str = "";
+                        $('.replyCount').html("Reply count  " + arr.length);
+                        $.each(arr, function (idx, reply) {
+                            console.log(reply);
+                            str += ' <div class="card-body" data-replyNo="' + reply.replyNo + '"><b>' + reply.replyNo + '</b>';
+                            str += '  <h5 class="card-title">' + reply.text + '</h5>';
+                            str += '  <h6 class="card-subtitle mb-2 text-muted">' + reply.replyer + ' </h6>';
+                            str += '  <p class="card-text">' + formatTime(reply.regDate) + '</p>';
+                            str += '  </div>';
+                        })
+                        listGroup.html(str);
+                    });
+                }
+
+
+                $(".replyCount").click(function () {
+                    loadJSONData();
+                });
+                var modal = $('.modal');
+                $(".addReply").click(function () {
+                    modal.modal('show');
+
+                    $(".modal-footer .btn").hide();
+                    $(".replySave, .replyClose").show();
+                });
+
+                $(".replySave").click(function () {
+                    var reply = {
+                        qno: qno,
+                        text: $('input[name="replyText"]').val(),
+                        replyer: $('input[name="replyer"]').val()
+                    }
+                    console.log(reply);
+
+                    $.ajax({
+                        url: '/replies/',
+                        method: 'post',
+                        data: JSON.stringify(reply),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+
+                            var newReplyNo = parseInt(data);
+                            alert(newReplyNo + "번 댓글이 등록되었습니다.")
+                            modal.modal('hide');
+                            loadJSONData();
+                        }
+                    })
+                })
+                $('.replyList').on("click",".card-body",function(){
+                    var replyNo=$(this).data("replyNo");
+
+                    $("input[name='replyText']").val( $(this).find('.card-title').html());
+                    $("input[name='replyer']").val($(this).find('.card-subtitle').html());
+                    $("input[name='replyNo']").val(replyNo);
+
+                    $(".modal-footer .btn").hide();
+                    $(".replyRemove, .replyModify, .replyClose").show();
+                    modal.modal('show');
+                });
+                $(".replyRemove").on("click", function(){
+                    var replyNo= $("input[name='replyNo']").val();
+
+                    $.ajax({
+                        url: '/replies/'+replyNo,
+                        method: 'delete',
+                        success: function(result){
+                            console.log("result: "+ result);
+                            if(result==='success'){
+                                alert("댓글이 삭제되었습니다");
+                                modal.modal('hide');
+                                loadJSONData();
+                            }
+                        }
+                    })
+                });
+                $(".replyModify").click(function(){
+                    var replyNo=$("input[name='replyNo']").val();
+
+                    var reply={
+                        replyNo:replyNo,
+                        qno:qno,
+                        text: $('input[name="replyText"]').val(),
+                        replyer: $('input[name="replyer"]').val()
+                    }
+                    console.log(reply);
+                    $.ajax({
+                        url: '/replies/' + replyNo,
+                        method: 'put',
+                        data: JSON.stringify(reply),
+                        contentType: 'application/json; charset=utf-8',
+                        success:function(result){
+                            console.log("RESULT: "+result);
+
+                            if(result==='success'){
+
+                                alert('댓글이 수정되었습니다');
+                                modal.modal('hide');
+                                loadJSONData();
+                            }
+                        }
+                    });
+                })
+            })
+
+        </script>
+    </th:block>
+</th:block>
