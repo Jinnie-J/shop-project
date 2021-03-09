@@ -17,7 +17,16 @@
         </ul>
     </div>
 <!--product list-->
-<div style="display:flex; flex-wrap:wrap; text-align:center; width:80%;">
+<div style="width:80%;">
+
+    <select>
+        <option>인기순</option>
+        <option>신상품순</option>
+        <option>낮은가격순</option>
+        <option>높은가격순</option>
+    </select>
+
+    <div style="display:flex; flex-wrap:wrap; text-align:center;">
     <th:block th:each="dto : ${result.dtoList}">
         <!--        [[${dto.pno}]]-->
 
@@ -34,7 +43,7 @@
         </div>
 
     </th:block>
-
+    </div>
 </div>
 <!--End product-->
 </div>
