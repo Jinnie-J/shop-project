@@ -1,14 +1,14 @@
 package com.maker.shop.controller;
 
 import com.maker.shop.dto.PageRequestDTO;
+import com.maker.shop.dto.PageResultDTO;
+import com.maker.shop.dto.ProductDTO;
 import com.maker.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,14 +19,26 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/prList")
-    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category) {
+    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType) {
 
         //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
-        log.info("category : " + category);
+
+        //log.info("category : " + sortType);
         model.addAttribute("category", category);
         model.addAttribute("gender", gender);
-        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category));
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category, sortType));
+
+    }
+
+    @PostMapping("/prList")
+    public void getSortList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType) {
+
+        model.addAttribute("category", category);
+        model.addAttribute("gender", gender);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category, sortType));
 
     }
 

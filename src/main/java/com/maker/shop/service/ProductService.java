@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public interface ProductService {
 
-    PageResultDTO<ProductDTO, Object[]> getProductList(PageRequestDTO requestDTO, String gender,String category);
+    PageResultDTO<ProductDTO, Object[]> getProductList(PageRequestDTO requestDTO, String gender,String category, String sortType);
 
     default ProductDTO entitiesToDTO(Product product, List<ProductImage> productImages){
 

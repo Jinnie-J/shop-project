@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
     .pagination ul > li {
         display:inline;
@@ -19,13 +20,16 @@
 <!--product list-->
 <div style="width:80%;">
 
-    <select>
-        <option>인기순</option>
-        <option>신상품순</option>
-        <option>낮은가격순</option>
-        <option>높은가격순</option>
+    <form id="pageDTO" action="/product/prList" method="get">
+    <input type="hidden" name="gender" th:value="${gender}">
+    <input type="hidden" name="category" th:value="${category}">
+    <select id="sortType" name="sortType">
+        <option value="new" selected>신상품순</option>
+        <option value="best">인기순</option>
+        <option value="priceasc">낮은가격순</option>
+        <option value="pricedesc">높은가격순</option>
     </select>
-
+    </form>
     <div style="display:flex; flex-wrap:wrap; text-align:center;">
     <th:block th:each="dto : ${result.dtoList}">
         <!--        [[${dto.pno}]]-->
@@ -74,6 +78,12 @@
         location.href = "/product/prDetail?pno="+pno;
 
     }
+
+    $("#sortType").on("change",function(){
+
+        $("#pageDTO").submit();
+
+    })
 </script>
 
 </html>
