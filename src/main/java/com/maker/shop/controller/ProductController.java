@@ -23,18 +23,7 @@ public class ProductController {
 
         //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
-
         //log.info("category : " + sortType);
-        model.addAttribute("category", category);
-        model.addAttribute("gender", gender);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category, sortType));
-
-    }
-
-    @PostMapping("/prList")
-    public void getSortList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType) {
-
         model.addAttribute("category", category);
         model.addAttribute("gender", gender);
         model.addAttribute("sortType", sortType);
