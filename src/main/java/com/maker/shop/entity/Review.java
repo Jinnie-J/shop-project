@@ -31,6 +31,8 @@ public class Review extends Serializers.Base {
     @Column(length=1500, nullable = false)
     private String content;
 
+    private int grade;
+
     private String score; //별점
 
 }

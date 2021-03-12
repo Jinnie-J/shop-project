@@ -28,9 +28,10 @@ public class QuestionController {
     }
 
     @GetMapping("/register")
-    public void register(){
+    public void register(Model model){
         log.info("register get...");
     }
+
     @PostMapping("/register")
     public String registerPost(QuestionDTO dto, RedirectAttributes redirectAttributes){
         log.info("dto..."+dto);
