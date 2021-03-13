@@ -6,7 +6,7 @@
     <th:block th:fragment="content">
         <h1 class="mt-4">후기 등록</h1>
 
-        <form th:action="@{/question/register}" th:method="post">
+        <form th:action="@{/review/register}" th:method="post">
             <div class="form-group">
                 <label>Product</label>
                 <input type="text" class="form-control" name="pno" placeholder="pno 출력">
@@ -38,6 +38,39 @@
 
             <button type="submit" class="btn btn-primary">submit</button>
         </form>
+
+        <style>
+
+            .uploadResult{
+                width:100%;
+                background-color:gray;
+                margin-top: 10px;
+            }
+            .uploadResult ul{
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
+                align-items:center;
+                vertical-align: top;
+                overflow:auto;
+            }
+            .uploadResult ul li{
+                list-stype: none;
+                padding:10px;
+                margin-left:2em;
+            }
+            .uploadResult ul li img{
+                width:100px;
+            }
+
+        </style>
+
+        <div class="uploadResult">
+            <ul>
+
+            </ul>
+        </div>
+
 
         <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
         <script>
@@ -89,13 +122,61 @@
                         success: function(result){
                             console.log(result);
                             showResult(result);
+                            alert('파일첨부');
                         },
                         error:function(jqXHR, textStatus, errorThrown){
                             console.log(textStatus);
+                            alert('파일에러');
                         }
                     });
                 }); //end change event
+                function showResult(uploadResultArr){
+                    var uploadUL = $(".uploadResult ul");
+                    var str="";
+                    $(uploadResultArr).each(function(i,obj){
+                        str+="<li data-name='"+ obj.fileName+"' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
+                        str+="<div>";
+                        str+="<button type='button' data-file=\'"+obj.imageURL+"\'";
+                        str+="class='btn-warning btn-sm'>X</button><br>";
+                        str+="<img src='/display?fileName="+obj.thumbnailURL + "'>";
+                        str+="</div>";
+                        str+="</li>";
+                    });
+                    uploadUL.append(str);
+                } //end showResult
 
+                $(".uploadResult").on("click","li button", function(e){
+
+                    console.log("delete file");
+
+                    var targetFile = $(this).data("file");
+                    var targetLi = $(this).closest("li");
+
+                    $.ajax({
+                        url:'/removeFile',
+                        data:{fileName: targetFile},
+                        dataType:'text',
+                        type:'POST',
+                        success: function(result){
+                            alert(result);
+                            targetLi.remove();
+                        }
+                    });
+                });
+                $(".btn-primary").on("click", function(e){
+                    e.preventDefault();
+
+                    var str= "";
+                    $(".uploadResult li").each(function(i,obj){
+                        var target= $(obj);
+
+                        str+="<input type='hidden' name='imageDTOList["+i+"].imgName'value='"+target.data('name')+ "'>";
+                        str+="<input type='hidden' name='imageDTOList["+i+"].path'value='"+target.data('path')+"'>";
+                        str+="<input type='hidden' name='imageDTOList["+i+"].uuid'value='"+target.data('uuid')+"'>";
+                    });
+                    $(".box").html(str);
+                    $("form").submit();
+                });
             });
         </script>
     </th:block>

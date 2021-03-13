@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT r, rImg FROM Review r " +
+    @Query("SELECT r, rImg, p, u FROM Review r " +
             "LEFT OUTER JOIN ReviewImage rImg ON rImg.review = r " +
+            "LEFT JOIN Product p on r.product= p "+
+            "LEFT JOIN r.user u "+
             "GROUP BY r ")
     Page<Object[]> getReviewListPage(Pageable pageable); //페이지 처리
 

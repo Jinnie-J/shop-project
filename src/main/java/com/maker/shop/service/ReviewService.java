@@ -1,5 +1,7 @@
 package com.maker.shop.service;
 
+import com.maker.shop.dto.PageRequestDTO;
+import com.maker.shop.dto.PageResultDTO;
 import com.maker.shop.dto.ReviewDTO;
 import com.maker.shop.dto.ReviewImageDTO;
 import com.maker.shop.entity.Member;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 public interface ReviewService {
 
     Long register(ReviewDTO reviewDTO);
+
+    PageResultDTO<ReviewDTO, Object[]>getList(PageRequestDTO requestDTO);
 
     default Map<String,Object> dtoToEntity(ReviewDTO reviewDTO){
         Map<String, Object> entityMap=new HashMap<>();
@@ -50,4 +54,32 @@ public interface ReviewService {
         }
         return entityMap;
     }
+
+    default ReviewDTO entitiesToDTO(Review review, List<ReviewImage> reviewImages,Product product, Member member){
+        ReviewDTO reviewDTO=ReviewDTO.builder()
+                .rno(review.getRno())
+                .title(review.getTitle())
+                .content(review.getContent())
+                .pno(product.getPno())
+                .writerEmail(member.getEmail())
+                .writerName(member.getName())
+                .grade(review.getGrade())
+                .regDate(review.getRegDate())
+                .modDate(review.getModDate())
+                .build();
+
+        List<ReviewImageDTO> reviewImageDTOList = reviewImages.stream()
+                .map(reviewImage -> {
+                    return ReviewImageDTO.builder().imgName(reviewImage.getImgName())
+                            .path(reviewImage.getPath())
+                            .uuid(reviewImage.getUuid())
+                            .build();
+                }).collect(Collectors.toList());
+
+        reviewDTO.setImageDTOList(reviewImageDTOList);
+
+        return reviewDTO;
+
+    }
+
 }
