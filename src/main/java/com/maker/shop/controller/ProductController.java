@@ -1,42 +1,34 @@
 package com.maker.shop.controller;
 
 import com.maker.shop.dto.PageRequestDTO;
+import com.maker.shop.dto.PageResultDTO;
+import com.maker.shop.dto.ProductDTO;
 import com.maker.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 @Log4j2
+@RequestMapping("/product/")
 public class ProductController {
 
     private final ProductService productService;
 
     @GetMapping("/prList")
-    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category) {
+    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType) {
 
         //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
-        log.info("category : " + category);
-
+        //log.info("category : " + sortType);
         model.addAttribute("category", category);
         model.addAttribute("gender", gender);
-        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category));
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category, sortType));
 
-    }
-
-    @GetMapping("/mainPr")
-    public void mainPr(PageRequestDTO pageRequestDTO,Model model) {
-
-        model.addAttribute("newProduct", productService.getNewProduct(pageRequestDTO));
-        model.addAttribute("saleProduct",productService.getSaleProduct(pageRequestDTO));
-
-//        log.info("메인페이지 상품목록 : " + productService.getNewProduct(pageRequestDTO));
-            log.info("할인품목 "+ productService.getSaleProduct(pageRequestDTO));
     }
 
     @GetMapping("/prDetail")

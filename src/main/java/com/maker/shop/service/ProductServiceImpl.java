@@ -33,12 +33,36 @@ public class ProductServiceImpl implements ProductService {
     private final ProductSizeRepository productSizeRepository;
 
     @Override
-    public PageResultDTO<ProductDTO, Object[]> getProductList(PageRequestDTO requestDTO, String gender,String category) {
+    public PageResultDTO<ProductDTO, Object[]> getProductList(PageRequestDTO requestDTO, String gender,String category, String sortType) {
 
         if(category == ""){
             category = null;
         }
-        Pageable pageable = requestDTO.getPageable(Sort.by("pno").descending());
+
+        requestDTO.setSize(20);
+
+        Pageable pageable = null;
+
+        switch (sortType){
+            case "best":
+                pageable = requestDTO.getPageable(Sort.by("pno").descending());
+                break;
+            case "priceasc":
+                pageable = requestDTO.getPageable(Sort.by("price").ascending());
+                break;
+            case "pricedesc":
+                pageable = requestDTO.getPageable(Sort.by("price").descending());
+                break;
+            case "new":
+                pageable = requestDTO.getPageable(Sort.by("modDate").descending());
+                break;
+            case "null":
+                pageable = requestDTO.getPageable(Sort.by("modDate").descending());
+                break;
+            default :
+                pageable = requestDTO.getPageable(Sort.by("modDate").descending());
+                break;
+        }
 
         Page<Object[]> result = productRepository.getProductListPage(pageable,gender, category);
 

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table>
+    <tbody>
+    <tr>
+        <th>상품명</th>
+        <td><input type="text" name="title"></td>
+    </tr>
+
+    <tr>
+        <th>이미지</th>
+        <td><input id="uploadFiles" name="uploadFiles" type="file" multiple>
+            <button class="uploadBtn">업로드</button>
+            <div class="uploadResult">
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <th>사이즈</th>
+        <td><select id="size">
+            <option th:each="num : ${#numbers.sequence(200,300,5)}" value="${num}">[[${num}]]</option>
+        </select></td>
+    </tr>
+
+    <tr>
+        <th>수량</th>
+        <td>
+            <input type="text" name="amount">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+
+    $('#uploadFiles').on("change",function(){
+
+        let formData = new FormData();
+
+        let inputFile = $("input[type='file']");
+
+        let files = inputFile[0].files;
+
+        for(let i = 0; i< files.length; i++){
+            console.log(files[i]);
+            formData.append("uploadFiles", files[i]);
+        }
+
+        //업로드
+        $.ajax({
+            url: '/uploadAjax',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result){
+                //console.log(result);
+                //화면처리
+                showUploadedImages(result);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(textStatus);
+            }
+        }); // end ajax
+        });
+
+function showUploadedImages(arr){
+
+    console.log(arr);
+
+    let divArea = $(".uploadResult"),
+    str = "";
+
+    for(let i = 0; i < arr.length; i++){
+
+        str += `<div><img src='/display?fileName=${arr[i].thumbnailURL}'>
+        <button class='removeBtn' data-name='${arr[i].imageURL}'>REMOVE</button></div>`;
+
+        }
+        divArea.append(str);
+    }
+
+    $(".uploadResult").on("click", ".removeBtn", function(e){
+
+        let target = $(this);
+        let fileName = target.data("name");
+        let targetDiv = $(this).closest("div");
+
+        console.log(fileName);
+
+        $.post('/removeFile', {fileName: fileName}, function(result){
+            console.log(result);
+            if(result === true){
+                targetDiv.remove();
+            }
+        })
+    });
+
+</script>
+</body>
+</html>
