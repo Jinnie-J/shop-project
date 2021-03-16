@@ -103,5 +103,4 @@ public interface ProductService {
     PageResultDTO<ProductDTO, Object[]> getNewProduct(PageRequestDTO requestDTO);
 
     PageResultDTO<ProductDTO, Object[]> getSaleProduct(PageRequestDTO requestDTO);
-
 }

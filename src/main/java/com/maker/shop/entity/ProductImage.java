@@ -23,7 +23,7 @@ public class ProductImage {
 
     private String path;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pno")
     private Product product;
 }

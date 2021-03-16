@@ -22,7 +22,7 @@ public class ProductSize extends BaseEntity{
 
     private Long amount; //수량
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pno")
     private Product product;
 }

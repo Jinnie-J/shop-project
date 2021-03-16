@@ -19,16 +19,14 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/prList")
-    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType) {
+    public void getProductList(PageRequestDTO pageRequestDTO, Model model, String gender, String category, String sortType, String brand) {
 
-        //log.info("pageRequestDTO: " + pageRequestDTO);
         //log.info("gender :" + filter);
         //log.info("category : " + sortType);
         model.addAttribute("category", category);
         model.addAttribute("gender", gender);
         model.addAttribute("sortType", sortType);
         model.addAttribute("result", productService.getProductList(pageRequestDTO, gender, category, sortType));
-
     }
 
     @GetMapping("/prDetail")

@@ -4,14 +4,14 @@ import com.maker.shop.dto.PageRequestDTO;
 import com.maker.shop.dto.PageResultDTO;
 import com.maker.shop.dto.ProductDTO;
 import com.maker.shop.dto.ProductSizeDTO;
-import com.maker.shop.entity.Product;
-import com.maker.shop.entity.ProductImage;
-import com.maker.shop.entity.ProductSize;
+import com.maker.shop.entity.*;
 import com.maker.shop.repository.ProductImageRepository;
 import com.maker.shop.repository.ProductRepository;
 import com.maker.shop.repository.ProductSizeRepository;
+import com.querydsl.core.QueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +26,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    @Autowired
     private final ProductRepository productRepository;
 
     private final ProductImageRepository productImageRepository;
@@ -110,8 +111,6 @@ public class ProductServiceImpl implements ProductService {
             productImageList.add(productImage);
 
         });
-
-
 
         return entitiesToDTO(product, productImageList);
     }

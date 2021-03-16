@@ -40,4 +40,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             " LEFT OUTER JOIN ProductImage pImg ON pImg.product = p " +
             " WHERE p.sale > 0 GROUP BY p.pno ")
     Page<Object[]> getSaleProduct(Pageable pageable);
+
 }

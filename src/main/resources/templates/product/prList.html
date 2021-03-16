@@ -16,21 +16,22 @@
 <li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1104 : 1111}),sortType=new )}">부츠</a></li>
 <li><a th:href="@{/product/prList(gender=${gender}, category= (${gender.equals('MEN') ? 1102 : 1109}),sortType=new )}">구두</a></li>
         </ul>
+
+
+        <th:block th:each="brand : ${brandList}">
+            <input type="checkbox" class="brandChk" th:value="${brand}"><label>[[${brand}]]</label> <br>
+        </th:block>
     </div>
 <!--product list-->
 <div style="width:80%;">
 
-    <form id="pageDTO" action="/product/prList" method="get">
-    <input type="hidden" name="gender" th:value="${gender}">
-    <input type="hidden" name="category" th:value="${category}">
     <select id="sortType" name="sortType">
         <option th:selected="${sortType}=='new'" value="new">신상품순</option>
         <option th:selected="${sortType}=='best'" value="best">인기순</option>
         <option th:selected="${sortType}=='priceasc'" value="priceasc">낮은가격순</option>
         <option th:selected="${sortType}=='pricedesc'" value="pricedesc">높은가격순</option>
     </select>
-    </form>
-    <div style="display:flex; flex-wrap:wrap; text-align:center;">
+    <div id="ProdListArea" style="display:flex; flex-wrap:wrap; text-align:center;">
     <th:block th:each="dto : ${result.dtoList}">
         <!--        [[${dto.pno}]]-->
 
@@ -71,6 +72,10 @@
     </ul>
 </div>
 
+<input type="hidden" id="_gender" th:value="${gender}">
+<input type="hidden" id="_category" th:value="${category}">
+<input type="hidden" id="_sortType" th:value="${sortType}">
+
 <script>
 
     function getProduct(pno) {
@@ -81,9 +86,51 @@
 
     $("#sortType").on("change",function(){
 
-        $("#pageDTO").submit();
+        let saveUrl = $(window.location).attr("href");
+
+            if (saveUrl.indexOf("?") !== -1) {
+            saveUrl = saveUrl.substring(0, saveUrl.indexOf("?"));
+        }
+
+        //url 넘길 파라미터값
+        let params = "";
+        params += "gender=" + $("#_gender").val();
+        params += "&category=" + $("#_category").val();
+        params += "&sortType=";
+
+        //값 받아오기
+        $("#ProdListArea").load(saveUrl + "?" + params + $(this).val() +" #ProdListArea");
+
+        //Url 변경
+        window.history.pushState(null,null, saveUrl + "?" + params + $(this).val());
 
     })
+
+    $(".brandChk").on("click",function(){
+
+        //checked
+        if($(this).is(":checked")){
+            alert($(this).val());
+
+            //값 받아오기
+            //$("#ProdListArea").load(saveUrl + "?" + params + $(this).val() +" #ProdListArea");
+
+            //Url 변경
+            //window.history.pushState(null,null, saveUrl + "?" + params + $(this).val());
+        }
+
+        //unchecked
+        else{
+            alert("unchecked");
+
+            //값 받아오기
+            //$("#ProdListArea").load(saveUrl + "?" + params + $(this).val() +" #ProdListArea");
+
+            //Url 변경
+            //window.history.pushState(null,null, saveUrl + "?" + params + $(this).val());
+        }
+    })
+
 </script>
 
 </html>
