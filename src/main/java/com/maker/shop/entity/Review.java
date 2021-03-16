@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @ToString(exclude={"product","user"})
-public class Review extends Serializers.Base {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,6 @@ public class Review extends Serializers.Base {
     @Column(length=1500, nullable = false)
     private String content;
 
-    private String score; //별점
+    private int grade; //별점
 
 }
