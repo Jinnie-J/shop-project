@@ -33,4 +33,8 @@ public class Review extends BaseEntity {
 
     private int grade; //별점
 
+    public void changeTitle(String title){this.title =title;}
+    public void changeContent(String content){
+        this.content=content;
+    }
 }

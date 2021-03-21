@@ -12,6 +12,11 @@
             </span>
         </h1>
 
+        <form action="/review/list" method="get" id="searchForm">
+
+            <input type="hidden" name="page" value="1">
+        </form>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -26,7 +31,7 @@
 
             <tr th:each="dto : ${result.dtoList}">
                 <th scope="row">
-                    <a th:href="@{/review/read(rno=${dto.rno})}">
+                    <a th:href="@{/review/read(rno=${dto.rno}, page=${result.page})}">
                         [[${dto.rno}]]
                     </a>
                 </th>
