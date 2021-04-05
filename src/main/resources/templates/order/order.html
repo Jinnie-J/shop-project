@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<img width="100%" height="100%" th:src="${imgUrl}">
+<div style="width:70%; margin-left:auto; margin-right:auto;">
 
-<th:block th:each="size : ${sizeArr}">
-  <th:text>[[${size}]]</th:text>
-</th:block>
+    <h1>주문서작성/결제</h1>
 
-<th:block th:each="cnt : ${cntArr}">
-    <th:text>[[${cnt}]]</th:text>
-</th:block>
+    <h3>주문리스트</h3>
 
+    <th:block th:each="dto : ${sizeDTO}">
+<!--주문상품내역-->
+    <div style="display:flex">
+
+<!--상품이미지-->
+        <div style="width:150px; height:150px">
+            <img width="100%" height="100%" th:src="${imgUrl}">
+        </div>
+<!--상품이름-->
+        <div style="width:50%">
+            [[${product.brand}]] <br>
+            [[${product.name}]]
+        </div>
+<!--가격-->
+        <div style="width:15%">
+            [[${product.price*dto.amount}]]
+        </div>
+<!--배송-->
+        <div style="width:15%">무료배송</div>
+    </div>
+
+    </th:block>
+
+</div>
 
 </html>

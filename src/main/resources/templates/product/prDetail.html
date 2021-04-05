@@ -99,7 +99,10 @@
     </div>
 
     <form id="order" action="/order/order" method="post">
+    <input type="hidden" name="brand" th:value="${productDTO.brand}">
 
+        <input type="hidden" name="price" th:value="${productDTO.price}">
+        <input type="hidden" name="name" th:value="${productDTO.name}">
     </form>
 </div>
 <!-- End content -->
@@ -207,10 +210,15 @@
 
     $("#buy").on("click",function(){
 
+
         let imgUrl = document.getElementsByClassName("thumImg")[0].getAttribute("src");
 
         let size = document.getElementsByClassName('sizeObj');
 
+        if(size.length === 0){
+            alert('사이즈를 선택해주세요');
+            return;
+        }
         // 카운트값, 사이즈값
         for(let i=0; i<size.length; i++){
             $("#order").append(`<input type='hidden' name='sizeArr' value=${document.getElementsByClassName('sizeObj')[i].children[0].innerText}>`);
@@ -219,8 +227,6 @@
         }
 
         $("#order").append(`<input type='hidden' name='imgUrl' value=${imgUrl}>`);
-
-
 
         $("#order").submit();
     })
