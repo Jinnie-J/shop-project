@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<img width="100%" height="100%" th:src="${imgUrl}">
+
+<th:block th:each="size : ${sizeArr}">
+  <th:text>[[${size}]]</th:text>
+</th:block>
+
+<th:block th:each="cnt : ${cntArr}">
+    <th:text>[[${cnt}]]</th:text>
+</th:block>
+
+
+</html>
