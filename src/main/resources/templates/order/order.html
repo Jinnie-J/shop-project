@@ -22,7 +22,7 @@
         </div>
 <!--가격-->
         <div style="width:15%">
-            [[${product.price*dto.amount}]]
+            <p th:text="${#numbers.formatInteger(product.price*dto.amount, 3, 'COMMA')} + 원"></p>
         </div>
 <!--배송-->
         <div style="width:15%">무료배송</div>
@@ -30,6 +30,12 @@
 
     </th:block>
 
+    <p>결제예정금액 </p>
+
 </div>
+
+<form action="/kakaoPay" method="post">
+    <button>카카오페이로</button>
+</form>
 
 </html>
