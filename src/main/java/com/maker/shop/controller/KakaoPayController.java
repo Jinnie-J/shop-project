@@ -25,8 +25,7 @@ public class KakaoPayController {
     @PostMapping("/kakaoPay")
     public String kakaoPay(){
 
-        //return "redirect:" + kakaopay.kakaoPayReady();
-        return "https://kapi.kakao.com/v1/payment/ready";
+        return "redirect:" + kakaopay.kakaoPayReady();
     }
 
     @GetMapping("/kakaoPaySuccess")

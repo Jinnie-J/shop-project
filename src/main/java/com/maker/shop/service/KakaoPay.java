@@ -32,8 +32,7 @@ public class KakaoPay {
         //서버로 요청할 Header
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add("Authorization","KakaoAK"+"5525ffa93febc021410f9a803d071cd2");
-        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        headers.add("Authorization","KakaoAK"+" 5525ffa93febc021410f9a803d071cd2");
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         // 서버로 요청할 Body
@@ -54,7 +53,7 @@ public class KakaoPay {
         try {
             kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyVO.class);
 
-            log.info("" + kakaoPayReadyVO);
+            log.info("카카오페이레디" + kakaoPayReadyVO);
 
             return kakaoPayReadyVO.getNext_redirect_pc_url();
 

@@ -26,7 +26,7 @@ public class OrderController {
 
     }
     @PostMapping("/order")
-    public void order(Model model, @RequestParam("cntArr") String[] cntArr, @RequestParam("sizeArr") String[] sizeArr, String imgUrl,Long price,String name, String brand){
+    public void order(Model model, @RequestParam("cntArr") String[] cntArr, @RequestParam("sizeArr") String[] sizeArr, String imgUrl,String price,String name, String brand){
 
         List<ProductSizeDTO> sizeDTO = new ArrayList<ProductSizeDTO>();
 
@@ -37,7 +37,7 @@ public class OrderController {
 
         ProductDTO product = new ProductDTO();
         product.setName(name);
-        product.setPrice(price);
+        product.setPrice(Long.parseLong(price));
         product.setBrand(brand);
 
         log.info("product : "+ product);
