@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
+    <th:block th:fragment="content">
+        <h1 class="mt-4">Review Read Page</h1>
+
+        <div class="form-group">
+            <label>Rno</label>
+            <input type="text" class="form-control" name="rno" th:value="${dto.rno}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Product</label>
+            <input type="text" class="form-control" name="pno" th:value="${dto.pno}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <input type="text" class="form-control" name="content" th:value="${dto.content}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Writer</label>
+            <input type="text" class="form-control" name="writerName" th:value="${dto.writerName}" readonly>
+        </div>
+        <div class="form-group">
+            <label>RegDate</label>
+            <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div class="form-group">
+            <label>ModDate</label>
+            <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+
+
+        <div class="uploadResult">
+            <ul>
+                <li th:each="reviewImage: ${dto.imageDTOList}">
+                    <img th:if="${reviewImage.path != null}" th:src="|/display?fileName=${reviewImage.getThumbnailURL()}|">
+                </li>
+            </ul>
+        </div>
+
+        <a th:href="@{/review/modify(rno=${dto.rno}, page=${requestDTO.page})}">
+            <button type="button" class="btn btn-primary">Modify</button></a>
+
+        <a th:href="@{/review/list(page=${requestDTO.page})}">
+            <button type="button" class="btn btn-info">List</button>
+        </a>
+
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="replyText" placeholder="Reply Text...">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="replyer" placeholder="replyer">
+                            <input type="hidden" name="replyNo">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger replyRemove">Remove</button>
+                        <button type="button" class="btn btn-warning replyModify">Modify</button>
+                        <button type="button" class="btn btn-primary replySave">Save</button>
+                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+
+            });
+
+        </script>
+    </th:block>
+</th:block>

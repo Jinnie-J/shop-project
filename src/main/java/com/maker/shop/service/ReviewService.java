@@ -14,11 +14,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 public interface ReviewService {
 
     Long register(ReviewDTO reviewDTO);
 
     PageResultDTO<ReviewDTO, Object[]>getList(PageRequestDTO requestDTO);
+
+    ReviewDTO getReview(Long rno);
+
+    void modify(ReviewDTO reviewDTO);
+
+    void removeReview(Long rno);
 
     default Map<String,Object> dtoToEntity(ReviewDTO reviewDTO){
         Map<String, Object> entityMap=new HashMap<>();
@@ -55,7 +62,7 @@ public interface ReviewService {
         return entityMap;
     }
 
-    default ReviewDTO entitiesToDTO(Review review, List<ReviewImage> reviewImages,Product product, Member member){
+    default ReviewDTO entitiesToDTO(Review review, List<ReviewImage> reviewImages, Product product, Member member){
         ReviewDTO reviewDTO=ReviewDTO.builder()
                 .rno(review.getRno())
                 .title(review.getTitle())
@@ -77,6 +84,9 @@ public interface ReviewService {
                 }).collect(Collectors.toList());
 
         reviewDTO.setImageDTOList(reviewImageDTOList);
+
+        System.out.println("service-------------"+reviewImageDTOList);
+        System.out.println(reviewDTO);
 
         return reviewDTO;
 

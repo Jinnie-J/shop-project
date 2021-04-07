@@ -17,8 +17,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "GROUP BY r ")
     Page<Object[]> getReviewListPage(Pageable pageable); //페이지 처리
 
-    @Query("select r, rImg " +
-            " from Review r left outer join ReviewImage rImg on rImg.review = r " +
-            " where r.rno = :rno ")
+    @Query("select r, rImg, p, u from Review r " +
+            "left outer join ReviewImage rImg on rImg.review = r " +
+            "left join Product p on r.product = p "+
+            "left join r.user u "+
+            "where r.rno = :rno ")
     List<Object[]> getReviewAll(Long rno); //특정 리뷰 조회
 }

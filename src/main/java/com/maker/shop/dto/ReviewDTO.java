@@ -27,4 +27,8 @@ public class ReviewDTO {
 
     @Builder.Default
     private List<ReviewImageDTO> imageDTOList=new ArrayList<>();
+
+    public void changeGrade(int grade){
+        this.grade=grade;
+    }
 }
