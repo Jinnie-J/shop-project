@@ -92,7 +92,6 @@ public class KakaoPay {
         params.add("total_amount", "2100");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-
         return null;
     }
 }
