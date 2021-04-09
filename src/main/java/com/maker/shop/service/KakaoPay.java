@@ -27,7 +27,7 @@ public class KakaoPay {
     private KakaoPayReadyVO kakaoPayReadyVO;
     private KakaoPayApprovalVO kakaoPayApprovalVO;
 
-    public String kakaoPayReady(){
+    public String kakaoPayReady(String name,String price,String amount){
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -42,12 +42,12 @@ public class KakaoPay {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("cid", "TC0ONETIME");
         params.add("partner_order_id", "1001");
-        params.add("partner_user_id", "gorany");
-        params.add("item_name", "갤럭시S9");
-        params.add("quantity", "1");
-        params.add("total_amount", "2100");
+        params.add("partner_user_id", "partner_user_id");
+        params.add("item_name", name);
+        params.add("quantity", amount);
+        params.add("total_amount", price);
         params.add("tax_free_amount", "100");
-        params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
+        params.add("approval_url", "http://localhost:8080/kakaoPaySuccess?price="+price);
         params.add("cancel_url", "http://localhost:8080/kakaoPayCancel");
         params.add("fail_url", "http://localhost:8080/kakaoPaySuccessFail");
 
@@ -72,7 +72,7 @@ public class KakaoPay {
 
     }
 
-    public KakaoPayApprovalVO kakaoPayInfo(String pg_token) {
+    public KakaoPayApprovalVO kakaoPayInfo(String pg_token,String price) {
 
         log.info("KakaoPayInfoVO............................................");
         log.info("-----------------------------");
@@ -90,9 +90,9 @@ public class KakaoPay {
         params.add("cid", "TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
         params.add("partner_order_id", "1001");
-        params.add("partner_user_id", "gorany");
+        params.add("partner_user_id", "partner_user_id");
         params.add("pg_token", pg_token);
-        params.add("total_amount", "2100");
+        params.add("total_amount", price);
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
         try {

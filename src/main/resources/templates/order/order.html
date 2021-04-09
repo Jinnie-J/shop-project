@@ -4,6 +4,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div style="width:70%; margin-left:auto; margin-right:auto;">
 
+    <input type="hidden" th:data-price="${product.price}" id="price">
     <h1>주문서작성/결제</h1>
 
     <h3>주문리스트</h3>
@@ -21,7 +22,8 @@
                 [[${product.brand}]] <br>
                 [[${product.name}]] <br>
 
-                <p class="pd_Info" th:data-size="${dto.size}" th:data-amount="${dto.amount}">[[${dto.size}]] / [[${dto.amount}]] 개</p>
+                <p class="pd_Info" th:data-size="${dto.size}" th:data-amount="${dto.amount}">[[${dto.size}]] /
+                    [[${dto.amount}]] 개</p>
             </div>
             <!--가격-->
             <div style="width:15%">
@@ -39,21 +41,28 @@
 
 <!--보내야 될 값 : 수량, 상품명, 총액-->
 <form action="/kakaoPay" method="post">
-    <input type="hidden" name="" value="">
-    <input type="hidden" name="" value="">
-    <input type="hidden" name="" value="">
-    <button>카카오페이로</button>
+    <input type="hidden" name="post_name" th:value="${product.name}">
+    <input type="hidden" name="post_amount" value="">
+    <input type="hidden" name="post_price" value="">
+    <button type="submit">카카오페이로</button>
 </form>
 <script>
-    $(document).ready(function(){
-          let pdList = document.getElementsByClassName('pd_Info');
+    $(document).ready(function () {
+        let pdList = document.getElementsByClassName('pd_Info');
 
-          console.log(pdList[0].dataset['amount']);
+        let totalAmount = 0;
+        for (let v of pdList) { totalAmount += v.dataset['amount'] * 1 };
 
-            let totalAmount = 0;
-          for(let v of pdList){ totalAmount += v.dataset['amount']*1};
+        let price = $("#price").data('price') * 1;
+        let totalPrice = totalAmount * price;
 
-          $("#totalPrice").text(`총 수량 ${totalAmount}`);
+        //결제 시 보낼 값들
+        document.getElementsByName('post_amount')[0].value = totalAmount;
+        document.getElementsByName('post_price')[0].value = totalPrice;
+
+        totalPrice = (totalAmount * price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        $("#totalPrice").text(`총 결제예정금액 ${totalPrice} 원`);
     })
 </script>
+
 </html>
