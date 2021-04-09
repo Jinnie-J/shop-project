@@ -3,7 +3,6 @@ package com.maker.shop.controller;
 import com.maker.shop.service.KakaoPay;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class KakaoPayController {
 
-    private KakaoPay kakaopay;
+    private final KakaoPay kakaopay;
 
     @GetMapping("/kakaoPay")
     public void kakaoPayGet(){

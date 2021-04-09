@@ -2,6 +2,7 @@ package com.maker.shop.service;
 
 import com.maker.shop.vo.KakaoPayApprovalVO;
 import com.maker.shop.vo.KakaoPayReadyVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,9 +19,10 @@ import java.net.URISyntaxException;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class KakaoPay {
 
-    private static final String HOST = "http://kapi.kakao.com";
+    private static final String HOST = "https://kapi.kakao.com";
 
     private KakaoPayReadyVO kakaoPayReadyVO;
     private KakaoPayApprovalVO kakaoPayApprovalVO;
@@ -33,6 +35,7 @@ public class KakaoPay {
         HttpHeaders headers = new HttpHeaders();
 
         headers.add("Authorization","KakaoAK"+" 5525ffa93febc021410f9a803d071cd2");
+        headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         // 서버로 요청할 Body
@@ -92,6 +95,19 @@ public class KakaoPay {
         params.add("total_amount", "2100");
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+        try {
+            kakaoPayApprovalVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/approve"), body, KakaoPayApprovalVO.class);
+            log.info("카카오페이VO" + kakaoPayApprovalVO);
+
+            return kakaoPayApprovalVO;
+
+        } catch (RestClientException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
 }
